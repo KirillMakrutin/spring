@@ -1,16 +1,30 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import './App.css';
+import axios from 'axios';
+import EmployeeList from "./EmployeeList/EmployeeList";
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <h1>Hello App</h1>
-        </header>
-      </div>
-    );
-  }
+    state = {
+        employees: []
+    };
+
+    componentDidMount() {
+        axios.get('http://localhost:8080/api/employees')
+            .then(response => this.setState({
+                employees: response.data._embedded.employees
+            }))
+    }
+
+    render() {
+        return (
+            <div className="App">
+                <header className="App-header">
+                    <h1>Employees</h1>
+                </header>
+                <EmployeeList employees={this.state.employees}/>
+            </div>
+        );
+    }
 }
 
 export default App;
